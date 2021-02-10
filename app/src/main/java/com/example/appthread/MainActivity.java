@@ -8,7 +8,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +29,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn2).setOnClickListener(v -> {
-            myThread.interrupt();
+            //myThread.interrupt();
+            Timer timer=new Timer();
+            TimerTask timerTask=new TimerTask() {
+                @Override
+                public void run() {
+                    Log.i("MYTIMER", "DONE");
+                }
+            };
+            timer.schedule(timerTask, 3000, 1000);
         });
 
     }
@@ -46,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "LOADING", Toast.LENGTH_SHORT).show();
                     break;
                 case STATE_DONE:
-                    Toast.makeText(MainActivity.this, "DONE " + ((SimpleClass) msg.obj).text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "DONE  " + ((SimpleClass) msg.obj).text, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
