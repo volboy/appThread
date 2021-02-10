@@ -38,7 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private static class MyThread extends Thread {
         @Override
         public void run() {
-            longTask();
+            for (int i = 0; i < 200; i++) {
+                if (isInterrupted()) {
+                    return;
+                }
+                longTask();
+            }
         }
     }
 }
