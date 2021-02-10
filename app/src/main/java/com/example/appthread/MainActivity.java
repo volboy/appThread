@@ -15,24 +15,26 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        longTask();
-                    }
-                }).start();
+                new myThread().start();
 
             }
         });
 
     }
 
-    private void longTask() {
+    private static void longTask() {
         try {
             Thread.sleep(3000);
             Log.i("MY_THREAD", "Task was done");
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static class myThread extends Thread{
+        @Override
+        public void run() {
+            longTask();
         }
     }
 }
