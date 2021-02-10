@@ -3,16 +3,11 @@ package com.example.appthread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "LOADING", Toast.LENGTH_SHORT).show();
                     break;
                 case STATE_DONE:
-                    Toast.makeText(MainActivity.this, "STOP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "DONE " + ((SimpleClass) msg.obj).text, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
@@ -80,10 +75,18 @@ public class MainActivity extends AppCompatActivity {
                 //activity.runOnUiThread(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
                 //handler.post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
                 //new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
-                handler.sendEmptyMessage(2);
+                handler.sendMessage(handler.obtainMessage(2, new SimpleClass("done message")));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static class SimpleClass {
+        private String text;
+
+        public SimpleClass(String text) {
+            this.text = text;
         }
     }
 }
