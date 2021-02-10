@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.Timer;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Thread myThread;
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +33,40 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn2).setOnClickListener(v -> {
             //myThread.interrupt();
-            Timer timer=new Timer();
-            TimerTask timerTask=new TimerTask() {
+            new AsyncTask<String, Integer, Void>() {
+                @SuppressLint("StaticFieldLeak")
+
                 @Override
-                public void run() {
-                    Log.i("MYTIMER", "DONE");
+                protected void onPreExecute() {
+                    Toast.makeText(MainActivity.this, "onPreExecute", Toast.LENGTH_SHORT).show();
                 }
-            };
-            timer.schedule(timerTask, 3000, 1000);
+
+                @Override
+                protected Void doInBackground(String... urls) {
+                    Log.i("MYASYNC", "start " + urls[0]);
+                    try {
+                        for (int i=0; i<=100; i++){
+                            Thread.sleep(100);
+                            publishProgress(i);
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("MYASYNC", "done");
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    Toast.makeText(MainActivity.this, "onPostExecute", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                protected void onProgressUpdate(Integer... values) {
+                    ((SeekBar) findViewById(R.id.seekBar)).setProgress(values[0]);
+                }
+            }.execute("http://site.com/movie.avi");
         });
 
     }
