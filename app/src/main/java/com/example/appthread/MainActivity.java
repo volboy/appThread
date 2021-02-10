@@ -8,16 +8,20 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Thread myThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new myThread().start();
 
-            }
+        findViewById(R.id.btn1).setOnClickListener(v -> {
+            myThread = new MyThread();
+            myThread.start();
+        });
+
+        findViewById(R.id.btn2).setOnClickListener(v -> {
+            myThread.interrupt();
         });
 
     }
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private static class myThread extends Thread{
+    private static class MyThread extends Thread {
         @Override
         public void run() {
             longTask();
