@@ -2,6 +2,7 @@ package com.example.appthread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,22 +29,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private static void longTask(Context context) {
+    private static void longTask(Activity activity) {
         try {
             Thread.sleep(3000);
             //Log.i("MY_THREAD", "Task was done");
-            Toast.makeText(context, "Task was done", Toast.LENGTH_LONG).show();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show();
+                }
+            });
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private static class MyThread extends Thread {
-        private  Context context;
+        private Activity activity;
 
-        public MyThread(Context context) {
+        public MyThread(Activity activity) {
             super();
-            this.context = context;
+            this.activity = activity;
         }
 
         @Override
@@ -52,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isInterrupted()) {
                     return;
                 }
-                longTask(context);
+                longTask(activity);
             }
         }
     }
