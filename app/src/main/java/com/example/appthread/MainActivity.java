@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 //Log.i("MY_THREAD", "Task was done");
                 //activity.runOnUiThread(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
                 //handler.post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
-                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
+                //new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
                 handler.sendEmptyMessage(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
