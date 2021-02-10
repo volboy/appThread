@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -47,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 Thread.sleep(3000);
                 //Log.i("MY_THREAD", "Task was done");
                 //activity.runOnUiThread(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
-                handler.post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
-
+                //handler.post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(activity, "Task was done", Toast.LENGTH_LONG).show());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
